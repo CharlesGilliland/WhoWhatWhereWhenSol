@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WhoWhatWhereWhen.Areas.Identity
+@inject UserManager<ApplicationUser> UserManager
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<input id="userId" type="hidden" asp-for="@UserManager.GetUserAsync(User).Result.Id"/>
+
+<div id="cards">
+
+</div>
+
+<a class="btn btn-primary" asp-controller="Events" asp-action="AddAttending" asp-route-id="2" asp-route-uid="f81050ef-03ec-427b-a0ac-7bd2cfa27c2b">Test Button</a>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var x = document.getElementById("userId").value;
+        $.ajax({
+            url: "https://localhost:44310/api/EventsAPI",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var obj = JSON.parse(JSON.stringify(item));
+                    var output = "<div class='card m-1'>";
+                    output += "<div class='card-header'>" + obj.title + "</div>"
+                    output += "<div class='card-body'>";
+                    output += "<h5 class='card-title'>" + obj.eventType.typeName + " : " + obj.dateAndTime + "</h5>";
+                    output += "<p class='card-text'>" + obj.description + "</p>"
+                    output += "<div id='controlButtons' class='row'>";
+                    output += "<a class='btn btn-primary' href='/Events/Details/" + obj.id + "'>View Details</a>";
+                    output += "<a class='btn btn-primary' href='/Events/Edit/" + obj.id + "'>Edit Event</a>";
+                    output += "<button data-customer-id='" + obj.id + "' class='btn-danger js-delete'>Delete Event</button>";
+                    output += "</div></div></div>";
+                    $("#cards").append(output);
+                });
+                $("#controlButtons .js-delete").on("click", function () {
+                    var button = $(this);
+                    bootbox.confirm("Are you sure you want to delete this event?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/EventsAPI/" + button.attr("data-customer-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    button.parents(".card").remove();
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    })
+</script>

@@ -1,0 +1,25 @@
+﻿@model WhoWhatWhereWhen.ViewModels.EventsViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="text-center">
+    <h1 class="display-4 mb-2">Welcome to Who What Where When</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <partial name="_EventsList" model="@Model.Events" />
+        </div>
+        <div class="col-3">
+            <h1>Some other content</h1>
+            <p>Perhaps a calendar</p>
+            <p>Also some user info</p>
+        </div>
+    </div>
+
+</div>
+
+
