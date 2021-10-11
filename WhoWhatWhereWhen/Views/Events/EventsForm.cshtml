@@ -1,4 +1,8 @@
-﻿@model WhoWhatWhereWhen.ViewModels.EventFormViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using WhoWhatWhereWhen.Areas.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@model WhoWhatWhereWhen.ViewModels.EventFormViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -14,31 +18,32 @@ else
 }
 
 <div class="container">
-        <form asp-controller="Events" asp-action="Save" method="POST">
-            <div class="form-group">
-                <label asp-for="@Model.Event.Title">Title</label>
-                <input asp-for="@Model.Event.Title" class="form-control" type="text" />
-                <span asp-validation-for="@Model.Event.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Event.EventTypeId">Event Type</label>
-                <select class="dropdown form-control" asp-for="@Model.Event.EventTypeId" asp-items='@new SelectList(Model.EventTypes, "Id", "TypeName")'></select>
-                <span asp-validation-for="@Model.Event.EventTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Event.DateAndTime">Date</label>
-                <input asp-for="@Model.Event.DateAndTime" class="form-control" type="date" />
-                <span asp-validation-for="@Model.Event.DateAndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Event.Description">Description</label>
-                <textarea asp-for="@Model.Event.Description" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="@Model.Event.Description" class="text-danger"></span>
-            </div>
-            <input asp-for="@Model.Event.Id" type="hidden" />
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
-    </div>
+    <form asp-controller="Events" asp-action="Save" method="POST">
+        <div class="form-group">
+            <label asp-for="@Model.Event.Title">Title</label>
+            <input asp-for="@Model.Event.Title" class="form-control" type="text" />
+            <span asp-validation-for="@Model.Event.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Event.EventTypeId">Event Type</label>
+            <select class="dropdown form-control" asp-for="@Model.Event.EventTypeId" asp-items='@new SelectList(Model.EventTypes, "Id", "TypeName")'></select>
+            <span asp-validation-for="@Model.Event.EventTypeId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Event.DateAndTime">Date</label>
+            <input asp-for="@Model.Event.DateAndTime" class="form-control" type="date" />
+            <span asp-validation-for="@Model.Event.DateAndTime" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Event.Description">Description</label>
+            <textarea asp-for="@Model.Event.Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="@Model.Event.Description" class="text-danger"></span>
+        </div>
+        <input asp-for="@Model.Event.Id" type="hidden" />
+        <input asp-for="@Model.Event.HostId" value="@UserManager.GetUserAsync(User).Result.Id" type="hidden"/>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
 
 @section scripts
 {

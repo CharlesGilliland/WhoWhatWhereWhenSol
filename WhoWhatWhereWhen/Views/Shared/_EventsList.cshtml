@@ -13,7 +13,6 @@
 
 </div>
 
-<a class="btn btn-primary" asp-controller="Events" asp-action="AddAttending" asp-route-id="2" asp-route-uid="f81050ef-03ec-427b-a0ac-7bd2cfa27c2b">Test Button</a>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -22,6 +21,7 @@
 <script>
     $(document).ready(function () {
         var x = document.getElementById("userId").value;
+        // alert(x);
         $.ajax({
             url: "https://localhost:44310/api/EventsAPI",
             method: "GET",
@@ -30,7 +30,7 @@
                 $.each(data, function (i, item) {
                     var obj = JSON.parse(JSON.stringify(item));
                     var output = "<div class='card m-1'>";
-                    output += "<div class='card-header'>" + obj.title + "</div>"
+                    output += "<div class='card-header'>" + obj.title + " Hosted by: " + obj.host.userName + "</div>"
                     output += "<div class='card-body'>";
                     output += "<h5 class='card-title'>" + obj.eventType.typeName + " : " + obj.dateAndTime + "</h5>";
                     output += "<p class='card-text'>" + obj.description + "</p>"

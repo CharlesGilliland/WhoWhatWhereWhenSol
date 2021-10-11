@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WhoWhatWhereWhen.Areas.Identity;
 
 namespace WhoWhatWhereWhen.Models
 {
@@ -25,6 +26,11 @@ namespace WhoWhatWhereWhen.Models
 
         [StringLength(500)]
         public string Description { get; set; }
+
+        [Required]
+        public string HostId { get; set; }
+
+        public ApplicationUser Host { get; set; }
 
         public IEnumerable<string> Attending { get; set; }
     }

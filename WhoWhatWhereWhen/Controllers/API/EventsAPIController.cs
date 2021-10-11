@@ -25,18 +25,16 @@ namespace WhoWhatWhereWhen.Controllers.API
             _context = context;
             _mapper = mapper;
         }
-        // GET api/events
         [HttpGet]
         public ActionResult<IEnumerable<EventDto>> GetEvents()
         {
-            return Ok(_context.Events.Include(x => x.EventType).ToList().Select(_mapper.Map<Event, EventDto>));
+            return Ok(_context.Events.Include(x => x.EventType).Include(x => x.Host).ToList().Select(_mapper.Map<Event, EventDto>));
         }
 
-        // GET api/events/{id}
         [HttpGet("{id}")]
         public ActionResult<EventDto> GetEvent(int id)
         {
-            var singleEvent = _context.Events.Include(x => x.EventType).SingleOrDefault(x => x.Id == id);
+            var singleEvent = _context.Events.Include(x => x.EventType).Include(x => x.Host).SingleOrDefault(x => x.Id == id);
 
             if (singleEvent == null)
             {

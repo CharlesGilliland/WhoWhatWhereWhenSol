@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WhoWhatWhereWhen.Data;
 
 namespace WhoWhatWhereWhen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211011115759_AddHostIdToEvent")]
+    partial class AddHostIdToEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,8 +246,7 @@ namespace WhoWhatWhereWhen.Data.Migrations
                         .HasColumnType("tinyint");
 
                     b.Property<string>("HostId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -255,8 +256,6 @@ namespace WhoWhatWhereWhen.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EventTypeId");
-
-                    b.HasIndex("HostId");
 
                     b.ToTable("Events");
                 });
@@ -333,15 +332,7 @@ namespace WhoWhatWhereWhen.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WhoWhatWhereWhen.Areas.Identity.ApplicationUser", "Host")
-                        .WithMany()
-                        .HasForeignKey("HostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("EventType");
-
-                    b.Navigation("Host");
                 });
 #pragma warning restore 612, 618
         }
